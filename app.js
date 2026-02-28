@@ -9,11 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
         errorState: document.getElementById('error-state'),
         refreshBtn: document.getElementById('refresh-btn'),
         retryBtn: document.getElementById('retry-btn'),
-        tickerContent: document.getElementById('live-ticker')
+        tickerContent: document.getElementById('live-ticker'),
+        loadMoreBtn: document.getElementById('load-more-btn'),
+        paginationContainer: document.getElementById('pagination-container')
     };
 
     // State
     let isFetching = false;
+    let allNewsItems = [];
+    let currentDisplayCount = 0;
+    const ITEMS_PER_PAGE = 9;
 
     // Initialize
     fetchNews();
@@ -24,6 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     elements.retryBtn.addEventListener('click', fetchNews);
+
+    elements.loadMoreBtn.addEventListener('click', () => {
+        currentDisplayCount += ITEMS_PER_PAGE;
+        renderNewsChunk();
+    });
 
     // Core Fetch Function
     async function fetchNews() {
@@ -67,9 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (items.length > 0) {
                 // Ensure items are sorted by newest first
-                const sortedItems = items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-                renderNews(sortedItems);
-                updateTicker(sortedItems);
+                allNewsItems = items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+                currentDisplayCount = ITEMS_PER_PAGE;
+                elements.grid.innerHTML = ''; // Clear prior entries
+
+                renderNewsChunk();
+                updateTicker(allNewsItems);
                 updateUIState('success');
             } else {
                 throw new Error('API returned no new items');
@@ -88,16 +101,23 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.loadingState.classList.add('hidden');
         elements.errorState.classList.add('hidden');
         elements.grid.classList.add('hidden');
+        elements.paginationContainer.classList.add('hidden');
 
         if (state === 'loading') elements.loadingState.classList.remove('hidden');
         if (state === 'error') elements.errorState.classList.remove('hidden');
-        if (state === 'success') elements.grid.classList.remove('hidden');
+        if (state === 'success') {
+            elements.grid.classList.remove('hidden');
+            if (currentDisplayCount < allNewsItems.length) {
+                elements.paginationContainer.classList.remove('hidden');
+            }
+        }
     }
 
-    function renderNews(items) {
-        elements.grid.innerHTML = ''; // Clear existing
+    function renderNewsChunk() {
+        const itemsToRender = allNewsItems.slice(0, currentDisplayCount);
+        elements.grid.innerHTML = ''; // Re-render from scratch for simplicity
 
-        items.forEach((item, index) => {
+        itemsToRender.forEach((item, index) => {
             // Determine if "urgent" based on keywords or just randomly for aesthetic demo
             const titleLow = item.title.toLowerCase();
             const isUrgent = titleLow.includes('attack') || titleLow.includes('strike') || index === 0;
@@ -148,6 +168,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Re-initialize lucide icons for newly added elements
         lucide.createIcons();
+
+        // Update load more button state
+        if (currentDisplayCount >= allNewsItems.length) {
+            elements.paginationContainer.classList.add('hidden');
+        } else {
+            elements.paginationContainer.classList.remove('hidden');
+        }
     }
 
     function updateTicker(items) {
