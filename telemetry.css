@@ -538,3 +538,50 @@
     fill: #00ccff;
     opacity: 0.6;
 }
+
+/* Phase 8: Cyber Terminal */
+.cyber-terminal-container {
+    background: rgba(0, 15, 5, 0.85);
+    /* Dark hacker green tint */
+    border: 1px solid var(--danger);
+    box-shadow: 0 0 15px rgba(255, 51, 102, 0.2);
+}
+
+.typing-indicator .dot-1,
+.typing-indicator .dot-2,
+.typing-indicator .dot-3 {
+    animation: blink 1.5s infinite;
+}
+
+.typing-indicator .dot-2 {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator .dot-3 {
+    animation-delay: 0.4s;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+#cyber-terminal-output::-webkit-scrollbar {
+    width: 6px;
+}
+
+#cyber-terminal-output::-webkit-scrollbar-track {
+    background: rgba(0, 255, 128, 0.05);
+}
+
+#cyber-terminal-output::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 128, 0.3);
+    border-radius: 3px;
+}

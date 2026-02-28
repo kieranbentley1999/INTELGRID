@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentImage = null;
     let currentFilter = 'nightvision';
-    const CA_TEXT = "OFFICIAL $INTEL CONTRACT: PENDING_DEPLOYMENT";
 
     // Handle Image Upload
     uploadInput.addEventListener('change', (e) => {
@@ -73,9 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 3. Draw Tactical HUD Overlay
         drawHUD(w, h);
-
-        // 4. Stamp Contract Address
-        drawWatermark(w, h);
     }
 
     function applyColorGrade(w, h) {
@@ -177,16 +173,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const time = new Date().toISOString().split('T')[1].split('.')[0];
         ctx.fillText(`ZULU: ${time}`, 30, h - 30);
-    }
-
-    function drawWatermark(w, h) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        ctx.fillRect(0, h - 25, w, 25);
-
-        const color = currentFilter === 'nightvision' ? '#00ff80' : '#ffffff';
-        ctx.fillStyle = color;
-        ctx.font = '12px "Courier New", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(CA_TEXT, w / 2, h - 8);
     }
 });
