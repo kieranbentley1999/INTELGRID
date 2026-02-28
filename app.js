@@ -1,9 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Config
     const RSS_URL = 'https://news.google.com/rss/search?q=America+Iran+when:1d&hl=en-US&gl=US&ceid=US:en';
-    // Using an RSS-to-JSON service like rsstojson to avoid CORS and get clean JSON without an API key
-    // A reliable free one is api.rss2json.com
-    const API_ENDPOINT = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
 
     // DOM Elements
     const elements = {
@@ -35,19 +32,47 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.refreshBtn.classList.add('active');
 
         try {
-            const response = await fetch(API_ENDPOINT);
+            // Append cache buster to the Google News URL to force fresh data
+            const targetUrl = `${RSS_URL}&cb=${new Date().getTime()}`;
+
+            // Use AllOrigins as a RAW CORS proxy to avoid rss2json caching delays
+            const PROXY_URL = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+
+            const response = await fetch(PROXY_URL);
             if (!response.ok) throw new Error('Network response was not ok');
 
-            const data = await response.json();
+            const textData = await response.text();
 
-            if (data.status === 'ok') {
+            // Parse XML
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(textData, "text/xml");
+
+            const items = Array.from(xmlDoc.querySelectorAll('item')).map(itemNode => {
+                const title = itemNode.querySelector('title')?.textContent || 'No Title';
+                const link = itemNode.querySelector('link')?.textContent || '#';
+                const pubDate = itemNode.querySelector('pubDate')?.textContent || new Date().toISOString();
+
+                let imgUrl = 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'; // fallback
+                const desc = itemNode.querySelector('description')?.textContent || '';
+                if (desc) {
+                    // Try to rip an image tag out of the google news HTML description
+                    const imgMatch = desc.match(/<img[^>]+src="([^">]+)"/);
+                    if (imgMatch && imgMatch[1]) {
+                        imgUrl = imgMatch[1];
+                    }
+                }
+
+                return { title, link, pubDate, thumbnail: imgUrl };
+            });
+
+            if (items.length > 0) {
                 // Ensure items are sorted by newest first
-                const sortedItems = data.items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+                const sortedItems = items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
                 renderNews(sortedItems);
                 updateTicker(sortedItems);
                 updateUIState('success');
             } else {
-                throw new Error('API returned error status');
+                throw new Error('API returned no new items');
             }
         } catch (error) {
             console.error('Fetch error:', error);
