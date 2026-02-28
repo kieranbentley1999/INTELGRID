@@ -36,11 +36,48 @@ document.addEventListener('DOMContentLoaded', () => {
         color: 0x00d4ff, // Accent Blue
         wireframe: true,
         transparent: true,
-        opacity: 0.15
+        opacity: 0.08 // Reduced opacity to make borders pop
     });
 
     const earthMesh = new THREE.Mesh(geometry, material);
     earthGroup.add(earthMesh);
+
+    // 3.5 Draw Country Borders from GeoJSON
+    const lineMaterial = new THREE.LineBasicMaterial({
+        color: 0x00ffff, // Bright neon cyan
+        linewidth: 2, // Note: WebGL line thickness is often limited to 1 across browsers, but we set it just in case
+        transparent: true,
+        opacity: 0.8 // High opacity
+    });
+
+    fetch('https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json')
+        .then(response => response.json())
+        .then(data => {
+            data.features.forEach(feature => {
+                if (feature.geometry.type === 'Polygon') {
+                    drawBorder(feature.geometry.coordinates[0]);
+                } else if (feature.geometry.type === 'MultiPolygon') {
+                    feature.geometry.coordinates.forEach(polygon => {
+                        drawBorder(polygon[0]);
+                    });
+                }
+            });
+        })
+        .catch(err => console.error("Could not load map data", err));
+
+    function drawBorder(coords) {
+        const points = [];
+        coords.forEach(coord => {
+            const lon = coord[0];
+            const lat = coord[1];
+            // Radius + 1.0 to ensure it sits clearly above the wireframe and solid core
+            points.push(getPositionFromLatLon(lat, lon, radius + 1.0));
+        });
+
+        const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+        const line = new THREE.Line(lineGeo, lineMaterial);
+        earthGroup.add(line);
+    }
 
     // Add a core solid sphere to hide back lines
     const coreMat = new THREE.MeshBasicMaterial({
