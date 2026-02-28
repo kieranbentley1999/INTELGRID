@@ -33,6 +33,30 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(calculateThreatLevel, 1500);
     setInterval(calculateThreatLevel, 45000); // Recalculate every 45s
 
+    // --- 1.5 AI Sentiment Index (Phase 5) ---
+    const tensionBar = document.getElementById('tension-level');
+    const tensionStatus = document.getElementById('tension-status-text');
+
+    function calculateSentiment() {
+        // Simulate an AI NLP analysis of current geopolitical news headlines
+        const sentimentScore = Math.random() * 100; // 0 (Peace) to 100 (War)
+
+        tensionBar.style.width = `${sentimentScore}%`;
+
+        if (sentimentScore > 80) {
+            tensionStatus.textContent = "CRITICAL: ESCALATORY RHETORIC DETECTED";
+            tensionStatus.style.color = "var(--accent-red)";
+        } else if (sentimentScore > 50) {
+            tensionStatus.textContent = "ELEVATED CONCERN: NEGATIVE SENTIMENT";
+            tensionStatus.style.color = "#ffaa00";
+        } else {
+            tensionStatus.textContent = "STABLE: DIPLOMATIC CHATTER NORMAL";
+            tensionStatus.style.color = "#00ccff";
+        }
+    }
+    setTimeout(calculateSentiment, 2000);
+    setInterval(calculateSentiment, 30000); // Re-run AI analysis every 30s
+
 
     // --- 2. Market Impact Tickers ---
     const marketsContainer = document.getElementById('market-tickers');
@@ -132,11 +156,36 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .attr("d", path);
 
-        // Fixed Hotspots (Existing)
+        // Interactive Hotspots (Phase 5)
         const hotspots = [
-            { lon: 51.38, lat: 35.68, name: "Tehran Target Alpha" },
-            { lon: 56.46, lat: 26.56, name: "Hormuz Chokepoint" },
-            { lon: 44.38, lat: 33.31, name: "Baghdad Green Zone" }
+            {
+                lon: 51.38, lat: 35.68,
+                name: "Tehran Command Center",
+                threat: "CRITICAL",
+                desc: "Primary command and control nodes for IRGC operations. High concentration of retaliatory assets and political leadership.",
+                activity: ["> Secure comms intercept: Volume increased 400%", "> Multiple high-ranking transits detected"]
+            },
+            {
+                lon: 56.46, lat: 26.56,
+                name: "Strait of Hormuz",
+                threat: "SEVERE",
+                desc: "Strategic maritime chokepoint. 20% of global oil transit. High risk of naval mining or fast-attack craft swarm tactics.",
+                activity: ["> Fast-attack craft maneuvering observed", "> Radar ping: Undisclosed submarine signature"]
+            },
+            {
+                lon: 44.38, lat: 33.31,
+                name: "Baghdad Green Zone",
+                threat: "ELEVATED",
+                desc: "US Embassy and coalition forces hub. Frequent target for proxy militia indirect fire (rocket/drone) attacks.",
+                activity: ["> C-RAM defense systems active", "> Proxy militia chatter spike"]
+            },
+            {
+                lon: 34.78, lat: 32.08,
+                name: "Tel Aviv Intel Hub",
+                threat: "HIGH",
+                desc: "Primary regional allied intelligence sharing node. Under continuous high-alert for ballistic missile interception.",
+                activity: ["> Iron Dome batteries redeployed", "> GPS spoofing active in sector"]
+            }
         ];
 
         // Draw Base Hotspots
@@ -150,7 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .attr("cy", d => projection([d.lon, d.lat])[1])
             .attr("r", 5)
             .attr("class", "pulse-ring")
-            .style("animation-delay", (d, i) => `${i * 0.5}s`);
+            .style("animation-delay", (d, i) => `${i * 0.5}s`)
+            .style("cursor", "crosshair")
+            .on("click", (event, d) => openDossier(d));
 
         hotspotLayer.selectAll(".hotspot-center")
             .data(hotspots)
@@ -159,15 +210,54 @@ document.addEventListener('DOMContentLoaded', () => {
             .attr("cx", d => projection([d.lon, d.lat])[0])
             .attr("cy", d => projection([d.lon, d.lat])[1])
             .attr("r", 3)
-            .style("fill", "var(--accent-red)");
+            .style("fill", "var(--accent-red)")
+            .style("cursor", "crosshair")
+            .on("click", (event, d) => openDossier(d));
 
         // Initialize Live USGS Seismic Data feed
         initSeismicFeed(svg, projection);
+
+        // Initialize Live OpenSky Flight Tracker (Phase 5)
+        initFlightTracker(svg, projection);
 
     }).catch(err => {
         console.error("Error loading map GeoJSON:", err);
         mapContainer.innerHTML = "<p style='color:red; text-align:center; padding-top:20px;'>Failed to connect to satellite imagery.</p>";
     });
+
+    // --- Phase 5: Interactive Target Dossiers ---
+    const dossierPanel = document.getElementById('dossier-panel');
+    const closeDossierBtn = document.getElementById('close-dossier');
+
+    closeDossierBtn.addEventListener('click', () => {
+        dossierPanel.classList.remove('active');
+    });
+
+    // Make it global so the click handler works
+    window.openDossier = function (data) {
+        document.getElementById('dossier-title').textContent = data.name;
+        document.getElementById('dossier-threat').textContent = data.threat;
+        document.getElementById('dossier-coords').textContent = `${data.lat} N, ${data.lon} E`;
+        document.getElementById('dossier-desc').textContent = data.desc;
+
+        const activityList = document.getElementById('dossier-activity');
+        activityList.innerHTML = '';
+        data.activity.forEach(act => {
+            const li = document.createElement('li');
+            li.textContent = act;
+            activityList.appendChild(li);
+        });
+
+        // Set Threat Color
+        const threatSpan = document.getElementById('dossier-threat');
+        threatSpan.className = ''; // reset
+        if (data.threat === 'CRITICAL') threatSpan.classList.add('accent-red');
+        else if (data.threat === 'SEVERE') threatSpan.style.color = '#ffaa00';
+        else threatSpan.classList.add('accent-blue');
+
+        // Slide out the panel
+        dossierPanel.classList.add('active');
+    }
 
     // --- 5. USGS Seismic "Anomaly" Tracker & Terminal Log ---
     const terminalLog = document.getElementById('terminal-log');
@@ -246,5 +336,121 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .catch(err => console.error("USGS Feed Error: ", err));
         }
+    }
+
+    // --- 6. Live Flight Tracker (OpenSky API - Phase 5) ---
+    function initFlightTracker(svgMap, mapProjection) {
+        // Define an SVG group for flights so they don't overlap under the map
+        const flightGroup = svgMap.append("g").attr("class", "flight-layer");
+
+        // Simple airplane icon path (SVG)
+        const planePath = "M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z";
+
+        function fetchFlights() {
+            // OpenSky Network public API. Bounding box for Middle East Theater
+            // [lamin, lomin, lamax, lomax] -> approx Lat 12-42, Lon 34-63
+            const OPENSKY_URL = 'https://opensky-network.org/api/states/all?lamin=12&lomin=34&lamax=42&lomax=63';
+
+            fetch(OPENSKY_URL)
+                .then(res => res.json())
+                .then(data => {
+                    if (!data || !data.states) return;
+
+                    // We only want a sample of flights so we don't clog the dashboard
+                    const flights = data.states.slice(0, 50).filter(f => f[5] && f[6]);
+
+                    // Data Binding in D3
+                    const planes = flightGroup.selectAll("path.flight-node")
+                        .data(flights, d => d[0]); // match by unique ICAO24 ID
+
+                    // Remove old planes leaving the airspace
+                    planes.exit().remove();
+
+                    // Update existing planes (transition to new coordinates)
+                    planes.transition().duration(2000)
+                        .attr("transform", d => {
+                            const proj = mapProjection([d[5], d[6]]);
+                            if (!proj) return "scale(0)";
+                            // Rotate plane based on true track (heading)
+                            const heading = d[10] || 0;
+                            return `translate(${proj[0]}, ${proj[1]}) scale(0.6) rotate(${heading - 45})`; // SVG plane path points diagonally upwards
+                        });
+
+                    // Add new planes entering the airspace
+                    planes.enter()
+                        .append("path")
+                        .attr("d", planePath)
+                        .attr("class", d => {
+                            // Assign tactical classifications randomly or by callsign regex if real
+                            const isMilitary = Math.random() > 0.8;
+                            const isAlert = Math.random() > 0.95;
+                            let c = "flight-node flight-commercial";
+                            if (isMilitary) c = "flight-node flight-military";
+                            if (isAlert) c = "flight-node flight-alert";
+                            return c;
+                        })
+                        .attr("transform", d => {
+                            const proj = mapProjection([d[5], d[6]]);
+                            if (!proj) return "scale(0)";
+                            const heading = d[10] || 0;
+                            return `translate(${proj[0]}, ${proj[1]}) scale(0.6) rotate(${heading - 45})`;
+                        })
+                        .style("opacity", 0)
+                        .transition().duration(1000)
+                        .style("opacity", 1);
+
+                })
+                .catch(err => {
+                    console.log("OpenSky rate limited or err:", err);
+                    // Add some fake planes if OpenSky rate limits us (they often do without auth)
+                    simulateLocalAirspaceTraffic();
+                });
+        }
+
+        // To handle OpenSky API restrictive limits for guests, provide a fallback simulation
+        function simulateLocalAirspaceTraffic() {
+            // Generates 5 fake moving planes in the Persian Gulf if API fails
+            const dummyData = Array.from({ length: 5 }).map((_, i) => {
+                return [
+                    `sim_${i}`, // id
+                    "SIM_AIR", // callsign
+                    "IR", // country
+                    0, 0, // time
+                    51 + (Math.random() * 4), // Lon
+                    26 + (Math.random() * 4), // Lat
+                    0, false, 0,
+                    Math.random() * 360 // Heading
+                ];
+            });
+
+            const planes = flightGroup.selectAll("path.flight-node").data(dummyData, d => d[0]);
+            planes.enter()
+                .append("path")
+                .attr("d", planePath)
+                .attr("class", "flight-node flight-military")
+                .attr("transform", d => {
+                    const proj = mapProjection([d[5], d[6]]);
+                    return `translate(${proj[0]}, ${proj[1]}) scale(0.6) rotate(${d[10] - 45})`;
+                });
+
+            // Randomly jiggle them manually without re-entering
+            flightGroup.selectAll("path.flight-node")
+                .transition().duration(3000)
+                .attr("transform", function () {
+                    const curr = d3.select(this).attr("transform");
+                    // Quick regex to extract translate x,y
+                    const match = curr.match(/translate\(([^,]+),\s*([^)]+)\)/);
+                    if (match) {
+                        let nx = parseFloat(match[1]) + (Math.random() * 10 - 5);
+                        let ny = parseFloat(match[2]) + (Math.random() * 10 - 5);
+                        return `translate(${nx}, ${ny}) scale(0.6) rotate(${Math.random() * 360})`;
+                    }
+                    return curr;
+                });
+        }
+
+        // Fetch flight data initially and poll every 15 seconds
+        fetchFlights();
+        setInterval(fetchFlights, 15000);
     }
 });

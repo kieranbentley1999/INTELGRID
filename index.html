@@ -49,9 +49,14 @@
                 </div>
             </div>
 
-            <div class="status-indicator">
-                <div class="pulse-dot"></div>
-                <span>LIVE FEED ACTIVE</span>
+            <div class="header-controls">
+                <button id="audio-toggle" class="cyber-btn" title="Toggle War Room Ambience">
+                    <i data-lucide="volume-x"></i> <span id="audio-status">AMBIENCE: OFF</span>
+                </button>
+                <div class="status-indicator">
+                    <div class="pulse-dot"></div>
+                    <span>LIVE FEED ACTIVE</span>
+                </div>
             </div>
         </div>
         <div class="ticker-wrapper">
@@ -65,20 +70,68 @@
 
     <main class="container">
 
+        <!-- OFFICIAL CA BANNER -->
+        <div class="ca-banner" style="margin-bottom: 2rem; border-radius: 8px;">
+            <div class="ca-content">
+                <span class="ca-label"><i data-lucide="shield-check"></i> OFFICIAL SECURE CONTRACT:</span>
+                <span class="ca-address" id="ca-value">9meUYC2c4qxUhGDckHHBLt29G9jp2jvBQzLZW3yRpump</span>
+                <button class="cyber-btn copy-btn" id="copy-ca-btn">
+                    <i data-lucide="copy"></i> <span>COPY CA</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Interactive Target Dossier Panel (Hidden by default) -->
+        <div id="dossier-panel" class="dossier-panel hidden">
+            <button id="close-dossier" class="cancel-btn"><i data-lucide="x"></i></button>
+            <div class="dossier-header">
+                <h2>TARGET DOSSIER</h2>
+                <h3 id="dossier-title" class="highlight">Loading...</h3>
+            </div>
+            <div class="dossier-content">
+                <div class="dossier-stat">
+                    <span class="stat-label">THREAT LEVEL:</span> <span id="dossier-threat"
+                        class="accent-red">HIGH</span>
+                </div>
+                <div class="dossier-stat">
+                    <span class="stat-label">COORDS:</span> <span id="dossier-coords" class="accent-blue">N/A</span>
+                </div>
+                <div class="dossier-desc" id="dossier-desc">
+                    <!-- Dynamic Intel -->
+                </div>
+                <div class="dossier-feed">
+                    <h4>RECENT KINETIC ACTIVITY</h4>
+                    <ul id="dossier-activity">
+                        <li class="system-msg">> Synchronizing...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <!-- Phase 2: Tactical Telemetry -->
         <section class="telemetry-dashboard">
             <!-- Left Column: Map & Threat Gauge -->
             <div class="telemetry-left">
-                <div class="defcon-widget" id="threat-gauge">
+                <div class="defcon-widget mb-widget" id="threat-gauge">
                     <div class="defcon-status">
                         <h3>THREAT LEVEL</h3>
                         <div class="defcon-level" id="defcon-display">CALCULATING...</div>
                     </div>
                 </div>
 
+                <div class="tension-widget mb-widget" id="tension-gauge">
+                    <div class="widget-header">
+                        <i data-lucide="activity"></i> AI SENTIMENT INDEX
+                    </div>
+                    <div class="tension-bar-container">
+                        <div class="tension-bar" id="tension-level"></div>
+                    </div>
+                    <div class="tension-status" id="tension-status-text">ANALYZING INTEL...</div>
+                </div>
+
                 <div class="map-widget">
                     <div class="widget-header">
-                        <i data-lucide="globe"></i> GLOBAL CONFLICT ZONES
+                        <i data-lucide="globe"></i> GLOBAL CONFLICT ZONES & LIVE AIRSPACE
                     </div>
                     <div id="threat-map-container">
                         <!-- D3 Map injected here -->
@@ -139,11 +192,23 @@
         </section>
     </main>
 
+    <script src="audio.js"></script>
     <script src="app.js"></script>
     <script src="telemetry.js"></script>
     <script>
         // Initialize Icons
         lucide.createIcons();
+
+        // Copy CA Button Logic
+        document.getElementById('copy-ca-btn').addEventListener('click', () => {
+            const caValue = document.getElementById('ca-value').innerText;
+            navigator.clipboard.writeText(caValue).then(() => {
+                const btnSpan = document.querySelector('#copy-ca-btn span');
+                const origText = btnSpan.innerText;
+                btnSpan.innerText = 'COPIED!';
+                setTimeout(() => btnSpan.innerText = origText, 2000);
+            });
+        });
     </script>
 </body>
 

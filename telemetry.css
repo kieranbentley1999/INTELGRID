@@ -313,3 +313,228 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* --- PHASE 5: Advanced Intel Modules & CA Banner --- */
+
+/* Header Controls & Audio Toggle */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cyber-btn {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--panel-border);
+    color: var(--text-muted);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.cyber-btn:hover {
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+.cyber-btn.active {
+    background: rgba(255, 170, 0, 0.15);
+    color: #ffaa00;
+    border-color: #ffaa00;
+    box-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
+}
+
+/* Interactive Target Dossier Panel */
+.dossier-panel {
+    position: fixed;
+    top: 80px;
+    right: -450px;
+    width: 400px;
+    height: calc(100vh - 100px);
+    background: rgba(2, 4, 6, 0.95);
+    border-left: 1px solid var(--accent-blue);
+    border-top: 1px solid var(--accent-blue);
+    border-bottom: 1px solid var(--accent-blue);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 212, 255, 0.1);
+    backdrop-filter: blur(20px);
+    z-index: 1000;
+    padding: 2rem;
+    transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    overflow-y: auto;
+}
+
+.dossier-panel.active {
+    right: 0;
+}
+
+.cancel-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.cancel-btn:hover {
+    color: var(--accent-red);
+}
+
+.dossier-header h2 {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+}
+
+.dossier-header h3 {
+    font-size: 1.5rem;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.dossier-stat {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dossier-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-body);
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    border-left: 2px solid var(--accent-blue);
+}
+
+.dossier-feed h4 {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.dossier-feed ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #4CAF50;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* CA Banner */
+.ca-banner {
+    background: linear-gradient(90deg, rgba(16, 16, 20, 0.95), rgba(40, 0, 0, 0.9));
+    border-bottom: 2px solid var(--accent-red);
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 50;
+    box-shadow: inset 0 -2px 10px rgba(255, 0, 0, 0.2);
+}
+
+.ca-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.ca-label {
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: bold;
+}
+
+.ca-address {
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 1px;
+    user-select: all;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    border: 1px dashed var(--accent-red);
+    text-shadow: 0 0 5px var(--accent-red);
+}
+
+/* Tension Widget (Sentiment Analysis) */
+.tension-bar-container {
+    height: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px inset rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    margin: 1.5rem 0 1rem 0;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8);
+}
+
+.tension-bar {
+    height: 100%;
+    width: 0%;
+    /* Dynamic */
+    background: linear-gradient(90deg, #00ccff, #ffaa00, #ff0000);
+    transition: width 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 6px;
+    box-shadow: 0 0 15px currentColor;
+}
+
+.tension-status {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-align: center;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Live Flight Tracker Nodes */
+.flight-node {
+    transition: transform 1s ease-out;
+}
+
+.flight-military {
+    fill: #ffaa00;
+}
+
+.flight-alert {
+    fill: var(--accent-red);
+    filter: drop-shadow(0 0 4px red);
+}
+
+.flight-commercial {
+    fill: #00ccff;
+    opacity: 0.6;
+}
