@@ -57,6 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         appendLog(logLine);
 
+        // Feed CVE payload into Escalation Engine & plot a new strike node
+        if (window.EscalationEngine) window.EscalationEngine.analyze(vuln.vulnerabilityName);
+        if (window.addGlobeThreat) {
+            // Randomly offset from generic Middle East coordinates for visual variety
+            const lat = 25 + Math.random() * 20;
+            const lon = 40 + Math.random() * 20;
+            window.addGlobeThreat(lat, lon);
+        }
+
         // Advance index, loop back if we hit the end
         currentIndex++;
         if (currentIndex >= 50) currentIndex = 0; // Just loop the top 50 recent to keep it fresh

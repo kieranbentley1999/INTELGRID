@@ -72,6 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
+                // Feed title into Escalation Engine
+                if (window.EscalationEngine) window.EscalationEngine.analyze(title);
+
                 return { title, link, pubDate, thumbnail: imgUrl };
             });
 
