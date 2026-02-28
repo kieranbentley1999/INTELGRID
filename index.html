@@ -70,12 +70,13 @@
 
     <main class="container">
 
-        <!-- OFFICIAL CA BANNER -->
-        <div class="ca-banner" style="margin-bottom: 2rem; border-radius: 8px;">
-            <div class="ca-content">
-                <span class="ca-label"><i data-lucide="shield-check"></i> OFFICIAL SECURE CONTRACT:</span>
-                <span class="ca-address" id="ca-value">9meUYC2c4qxUhGDckHHBLt29G9jp2jvBQzLZW3yRpump</span>
-                <button class="cyber-btn copy-btn" id="copy-ca-btn">
+        <!-- Token CA Banner -->
+        <div class="ca-banner-wrapper">
+            <div class="ca-banner pulse-border">
+                <i data-lucide="shield-check" style="color:var(--success);"></i>
+                <span class="ca-label">OFFICIAL $INTEL CONTRACT:</span>
+                <span class="ca-value" id="ca-value">PENDING_DEPLOYMENT...</span>
+                <button class="glass-btn copy-btn" id="copy-ca-btn">
                     <i data-lucide="copy"></i> <span>COPY CA</span>
                 </button>
             </div>
@@ -198,11 +199,55 @@
                 </button>
             </div>
         </section>
+
+        <!-- Phase 7: Tactical PFP Generator -->
+        <section class="pfp-generator-section" style="margin-top: 3rem; margin-bottom: 2rem;">
+            <div class="dashboard-header">
+                <h2>OPERATIVE IDENTITY: SECURE PFP GENERATOR</h2>
+            </div>
+            <div class="pfp-generator-container glass-panel">
+                <div class="pfp-controls">
+                    <p class="crypto-flavor-text" style="color:#8b949e; font-size:14px; margin-bottom: 20px;">
+                        Upload your profile picture to initialize tactical night-vision combat protocols. Rep the $INTEL
+                        network.
+                    </p>
+                    <label for="pfp-upload" class="glass-btn upload-label"
+                        style="display:inline-block; cursor:pointer;">
+                        <i data-lucide="upload-cloud"></i> SELECT TARGET IMAGE
+                        <input type="file" id="pfp-upload" accept="image/*" style="display:none;">
+                    </label>
+
+                    <div class="hud-options" style="margin-top:20px;">
+                        <h4>SELECT COMBAT FILTER</h4>
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <button class="glass-btn filter-btn active" data-filter="nightvision">NIGHT VISION
+                                (GREEN)</button>
+                            <button class="glass-btn filter-btn" data-filter="thermal">THERMAL (RED/BLUE)</button>
+                        </div>
+                    </div>
+
+                    <button class="glass-btn" id="download-pfp-btn"
+                        style="margin-top: 30px; border-color:var(--success); color:var(--success); display:none;">
+                        <i data-lucide="download"></i> SECURE & DOWNLOAD ASSET
+                    </button>
+                </div>
+
+                <div class="pfp-preview-container">
+                    <!-- The Canvas where compositing happens -->
+                    <canvas id="pfp-canvas" width="500" height="500"></canvas>
+                    <div id="pfp-placeholder" class="pfp-placeholder">
+                        <i data-lucide="user" style="width:48px; height:48px; opacity:0.3; margin-bottom:10px;"></i>
+                        <span>AWAITING UPLOAD...</span>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <script src="audio.js"></script>
     <script src="app.js"></script>
     <script src="telemetry.js"></script>
+    <script src="pfp.js"></script>
     <script>
         // Initialize Icons
         lucide.createIcons();
