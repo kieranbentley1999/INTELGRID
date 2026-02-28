@@ -1,0 +1,315 @@
+/* Phase 2: Telemetry Dashboard */
+.telemetry-dashboard {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.widget-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--panel-border);
+    padding-bottom: 0.5rem;
+}
+
+.widget-header i {
+    width: 16px;
+    height: 16px;
+    color: var(--accent-blue);
+}
+
+/* DEFCON / Threat Gauge */
+.defcon-widget {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.defcon-status h3 {
+    font-family: var(--font-heading);
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.defcon-level {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-align: center;
+    letter-spacing: 4px;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    transition: color 0.5s, text-shadow 0.5s;
+}
+
+/* Threat Map */
+.map-widget {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 1rem;
+    backdrop-filter: blur(10px);
+}
+
+#threat-map-container {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 6px;
+}
+
+.land {
+    fill: #1a2235;
+    stroke: #2a3b5c;
+    stroke-width: 0.5;
+    transition: fill 0.3s;
+}
+
+.land:hover {
+    fill: #2a3b5c;
+}
+
+.country-iran {
+    fill: rgba(255, 51, 51, 0.3) !important;
+    stroke: var(--accent-red) !important;
+}
+
+.country-usa {
+    fill: rgba(0, 212, 255, 0.2) !important;
+    stroke: var(--accent-blue) !important;
+}
+
+.pulse-ring {
+    fill: none;
+    stroke: var(--accent-red);
+    stroke-width: 2;
+    animation: radarPulse 2s ease-out infinite;
+}
+
+@keyframes radarPulse {
+    0% {
+        r: 1;
+        opacity: 1;
+    }
+
+    100% {
+        r: 30;
+        opacity: 0;
+    }
+}
+
+/* Seismic Anomaly Ring */
+.anomaly-ring {
+    fill: none;
+    stroke: #ffaa00;
+    stroke-width: 1.5;
+    animation: radarPulse 3s ease-out infinite;
+}
+
+/* Common Widget spacing */
+.mb-widget {
+    margin-bottom: 1.5rem;
+}
+
+/* Market Tickers */
+.markets-widget {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.market-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.market-item:last-child {
+    border-bottom: none;
+}
+
+.market-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.market-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--panel-border);
+}
+
+.market-icon i {
+    width: 20px;
+    height: 20px;
+    color: var(--text-main);
+}
+
+.market-name {
+    font-family: var(--font-heading);
+    font-weight: 600;
+}
+
+.market-ticker {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.market-data {
+    text-align: right;
+    font-family: var(--font-mono);
+}
+
+.market-price {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+
+.market-change {
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    justify-content: flex-end;
+}
+
+.change-up {
+    color: #00ff88;
+}
+
+.change-down {
+    color: var(--accent-red);
+}
+
+/* Terminal Widget */
+.terminal-widget {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.terminal-screen {
+    background: #020406;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 6px;
+    padding: 1rem;
+    height: 250px;
+    overflow-y: auto;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #4CAF50;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Custom Scrollbar for Terminal */
+.terminal-screen::-webkit-scrollbar {
+    width: 6px;
+}
+
+.terminal-screen::-webkit-scrollbar-track {
+    background: #000;
+}
+
+.terminal-screen::-webkit-scrollbar-thumb {
+    background: rgba(0, 212, 255, 0.3);
+    border-radius: 3px;
+}
+
+.log-line {
+    border-left: 2px solid transparent;
+    padding-left: 5px;
+    opacity: 0.9;
+    animation: type 0.3s ease-in;
+}
+
+@keyframes type {
+    from {
+        opacity: 0;
+        transform: translateX(-5px);
+    }
+
+    to {
+        opacity: 0.9;
+        transform: translateX(0);
+    }
+}
+
+.system-msg {
+    color: var(--text-muted);
+}
+
+.alert-msg {
+    color: #ffaa00;
+    border-left-color: #ffaa00;
+    background: rgba(255, 170, 0, 0.05);
+}
+
+/* Global Time Hub (in Header) */
+.global-time {
+    display: flex;
+    gap: 1.5rem;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.time-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tz-label {
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+.tz-time {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--accent-blue);
+    font-weight: 500;
+    text-shadow: 0 0 5px var(--accent-blue-glow);
+}
+
+@media (max-width: 1024px) {
+    .telemetry-dashboard {
+        grid-template-columns: 1fr;
+    }
+}

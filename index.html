@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Conflict Tracker: US-Iran</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Roboto+Mono:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="telemetry.css">
+    <!-- Lucide Icons via CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson-client@3"></script>
+</head>
+
+<body>
+    <!-- Background Elements for Aesthetics -->
+    <div class="bg-glow bg-glow-red"></div>
+    <div class="bg-glow bg-glow-blue"></div>
+    <div class="grid-overlay"></div>
+
+    <header class="glass-header">
+        <div class="header-content">
+            <div class="brand">
+                <i data-lucide="crosshair" class="brand-icon"></i>
+                <div class="brand-text">
+                    <h1>INTEL<span class="highlight">GRID</span></h1>
+                    <span class="subtitle">US-IRAN THEATER OF OPERATIONS</span>
+                </div>
+            </div>
+
+            <div class="global-time" id="global-time">
+                <div class="time-zone">
+                    <span class="tz-label">TEHRAN</span>
+                    <span class="tz-time" id="time-thr">00:00:00</span>
+                </div>
+                <div class="time-zone">
+                    <span class="tz-label">WASH DC</span>
+                    <span class="tz-time" id="time-dc">00:00:00</span>
+                </div>
+                <div class="time-zone">
+                    <span class="tz-label">ZULU</span>
+                    <span class="tz-time" id="time-utc">00:00:00</span>
+                </div>
+            </div>
+
+            <div class="status-indicator">
+                <div class="pulse-dot"></div>
+                <span>LIVE FEED ACTIVE</span>
+            </div>
+        </div>
+        <div class="ticker-wrapper">
+            <div class="ticker-label">LATEST</div>
+            <div class="ticker-content" id="live-ticker">
+                <!-- Ticker items dynamically injected -->
+                <span>Initializing secure connection... Waiting for datalink...</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Phase 2: Tactical Telemetry -->
+        <section class="telemetry-dashboard">
+            <!-- Left Column: Map & Threat Gauge -->
+            <div class="telemetry-left">
+                <div class="defcon-widget" id="threat-gauge">
+                    <div class="defcon-status">
+                        <h3>THREAT LEVEL</h3>
+                        <div class="defcon-level" id="defcon-display">CALCULATING...</div>
+                    </div>
+                </div>
+
+                <div class="map-widget">
+                    <div class="widget-header">
+                        <i data-lucide="globe"></i> GLOBAL CONFLICT ZONES
+                    </div>
+                    <div id="threat-map-container">
+                        <!-- D3 Map injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Markets & Terminal -->
+            <div class="telemetry-right">
+                <div class="markets-widget mb-widget">
+                    <div class="widget-header">
+                        <i data-lucide="trending-down"></i> MARKET IMPACT
+                    </div>
+                    <div class="market-tickers" id="market-tickers">
+                        <!-- Market items injected here -->
+                    </div>
+                </div>
+
+                <div class="terminal-widget">
+                    <div class="widget-header">
+                        <i data-lucide="radio"></i> LIVE SEISMIC / KINETIC INTERCEPTS
+                    </div>
+                    <div class="terminal-screen" id="terminal-log">
+                        <!-- Logs injected here -->
+                        <div class="log-line system-msg">> Establishing connection to USGS global seismic network...
+                        </div>
+                        <div class="log-line system-msg">> Filtering telemetry for Middle Eastern Theater coordinates...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="ops-dashboard">
+            <div class="dashboard-header">
+                <h2>TACTICAL NEWS FEED</h2>
+                <div class="controls">
+                    <button class="control-btn active" id="refresh-btn">
+                        <i data-lucide="refresh-cw"></i> <span>SYNC DATA</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="loading-state" class="state-container">
+                <div class="loader"></div>
+                <p>Decrypting incoming transmissions...</p>
+            </div>
+
+            <div id="error-state" class="state-container hidden">
+                <i data-lucide="alert-triangle" class="error-icon"></i>
+                <p>Connection lost. Unable to retrieve intelligence data.</p>
+                <button id="retry-btn" class="glass-btn">RETRY CONNECTION</button>
+            </div>
+
+            <div id="news-grid" class="news-grid hidden">
+                <!-- News cards strategically injected here -->
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+    <script src="telemetry.js"></script>
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
