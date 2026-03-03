@@ -10,8 +10,11 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Roboto+Mono:wght@300;400;500&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="telemetry.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="stylesheet" href="style.css?v=5.0">
+    <link rel="stylesheet" href="telemetry.css?v=5.0">
 
     <!-- Phase 11: Leaflet.js for Interactive World Map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
@@ -139,9 +142,11 @@
                     <div class="widget-header">
                         <i data-lucide="globe"></i> GLOBAL ESCALATION VECTOR
                     </div>
-                    <div id="map-container"
-                        style="width: 100%; height: 450px; position: relative; overflow: hidden; border-radius: 4px; border: 1px solid rgba(0, 212, 255, 0.2); box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8); background: #050608;">
-                        <!-- Leaflet Map injected here -->
+                    <div id="tactical-sat-mount"
+                        style="width: 100%; height: 450px; position: relative; overflow: hidden; border-radius: 4px; border: 1px solid rgba(0, 212, 255, 0.2); box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8); background: #050608; display: flex; align-items: center; justify-content: center;">
+                        <div id="sat-status" class="system-msg" style="font-size: 0.8rem; letter-spacing: 2px;">
+                            <i data-lucide="loader" class="spin"></i> ESTABLISHING SECURE SATELLITE DATALINK...
+                        </div>
                     </div>
                 </div>
             </div>
@@ -220,6 +225,7 @@
             <div class="surveillance-grid">
                 <!-- Feed 1: Generic Middle East / City Cam -->
                 <div class="surveillance-cam">
+                    <div class="cam-hitbox"></div>
                     <div class="cam-overlay">
                         <div class="cam-info">CAM-01 // M.E. THEATER // <span class="cam-time">--:--:--</span></div>
                         <div class="cam-status">REC</div>
@@ -232,6 +238,7 @@
 
                 <!-- Feed 2: Washington DC / Capital Cam -->
                 <div class="surveillance-cam">
+                    <div class="cam-hitbox"></div>
                     <div class="cam-overlay">
                         <div class="cam-info">CAM-02 // D.C. SECTOR // <span class="cam-time">--:--:--</span></div>
                         <div class="cam-status">REC</div>
@@ -244,6 +251,7 @@
 
                 <!-- Feed 3: Earth from Space (Global Monitor) -->
                 <div class="surveillance-cam">
+                    <div class="cam-hitbox"></div>
                     <div class="cam-overlay">
                         <div class="cam-info">CAM-03 // WHITE HOUSE // <span class="cam-time">--:--:--</span></div>
                         <div class="cam-status">REC</div>
@@ -256,6 +264,7 @@
 
                 <!-- Feed 4: Times Square / Major Metro -->
                 <div class="surveillance-cam">
+                    <div class="cam-hitbox"></div>
                     <div class="cam-overlay">
                         <div class="cam-info">CAM-04 // JERUSALEM // <span class="cam-time">--:--:--</span></div>
                         <div class="cam-status">REC</div>
@@ -312,12 +321,13 @@
         </section>
     </main>
 
-    <script src="audio.js"></script>
-    <script src="app.js"></script>
-    <script src="telemetry.js"></script>
-    <script src="pfp.js"></script>
-    <script src="cyber.js"></script>
-    <script src="map_system.js"></script>
+    <script src="audio.js?v=5.0"></script>
+    <script src="escalation.js?v=5.0"></script>
+    <script src="app.js?v=5.0"></script>
+    <script src="telemetry.js?v=5.0"></script>
+    <script src="pfp.js?v=5.0"></script>
+    <script src="cyber.js?v=5.0"></script>
+    <script src="map_system.js?v=5.0"></script>
     <script>
         // Initialize Icons
         lucide.createIcons();

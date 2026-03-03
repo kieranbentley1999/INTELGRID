@@ -500,7 +500,7 @@ body {
 }
 
 .leaflet-tile {
-    filter: brightness(0.6) contrast(1.2) sepia(1) hue-rotate(180deg) saturate(2);
+    filter: brightness(0.7) contrast(1.1) saturate(1.2);
 }
 
 .leaflet-bar a {
@@ -575,7 +575,7 @@ body.red-alert .pulse-dot {
 }
 
 body.red-alert .leaflet-tile {
-    filter: brightness(0.5) contrast(1.5) sepia(1) hue-rotate(-50deg) saturate(3);
+    filter: brightness(0.5) contrast(1.5) sepia(0.5) hue-rotate(-50deg) saturate(2);
 }
 
 @keyframes master-alert {
@@ -591,8 +591,26 @@ body.red-alert .leaflet-tile {
 }
 
 .surveillance-cam {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border: 1px solid var(--panel-border);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     cursor: zoom-in;
     transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.cam-hitbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    cursor: zoom-in;
 }
 
 .surveillance-cam:hover {
@@ -628,5 +646,19 @@ body.red-alert .leaflet-tile {
 
     .news-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+.spin {
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
     }
 }

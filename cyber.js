@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const terminalOutput = document.getElementById('cyber-terminal-output');
-    if (!terminalOutput) return;
+    const terminalOutput = document.getElementById('terminal-log');
+    // We don't return here because surveillance logic is in this file too
 
     // CISA Known Exploited Vulnerabilities Catalog
     const CISA_KEV_URL = 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentIndex = 0;
 
     async function fetchCyberThreats() {
+        if (!terminalOutput) return;
         try {
             const response = await fetch(PROXY_URL);
             if (!response.ok) throw new Error('CISA Feed connection failed');
@@ -96,14 +97,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Phase 13: Surveillance Fullscreen ---
-    document.querySelectorAll('.surveillance-cam').forEach(cam => {
-        cam.style.cursor = 'zoom-in';
-        cam.addEventListener('click', () => {
+    document.querySelectorAll('.cam-hitbox').forEach(hitbox => {
+        hitbox.addEventListener('click', () => {
+            const cam = hitbox.parentElement;
             if (cam.requestFullscreen) {
                 cam.requestFullscreen();
-            } else if (cam.webkitRequestFullscreen) { /* Safari */
+            } else if (cam.webkitRequestFullscreen) {
                 cam.webkitRequestFullscreen();
-            } else if (cam.msRequestFullscreen) { /* IE11 */
+            } else if (cam.msRequestFullscreen) {
                 cam.msRequestFullscreen();
             }
         });
