@@ -95,6 +95,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Phase 13: Surveillance Fullscreen ---
+    document.querySelectorAll('.surveillance-cam').forEach(cam => {
+        cam.style.cursor = 'zoom-in';
+        cam.addEventListener('click', () => {
+            if (cam.requestFullscreen) {
+                cam.requestFullscreen();
+            } else if (cam.webkitRequestFullscreen) { /* Safari */
+                cam.webkitRequestFullscreen();
+            } else if (cam.msRequestFullscreen) { /* IE11 */
+                cam.msRequestFullscreen();
+            }
+        });
+    });
+
     // Initialize fetch
     setTimeout(fetchCyberThreats, 1500); // Slight delay for dramatic startup effect
 });

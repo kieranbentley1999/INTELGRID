@@ -494,6 +494,124 @@ body {
     border-color: var(--accent-red);
 }
 
+/* Leaflet Tactical Customization */
+.leaflet-container {
+    background: #050608 !important;
+}
+
+.leaflet-tile {
+    filter: brightness(0.6) contrast(1.2) sepia(1) hue-rotate(180deg) saturate(2);
+}
+
+.leaflet-bar a {
+    background-color: var(--panel-bg) !important;
+    color: var(--accent-blue) !important;
+    border: 1px solid var(--panel-border) !important;
+    backdrop-filter: blur(8px);
+}
+
+.leaflet-bar a:hover {
+    background-color: var(--accent-blue) !important;
+    color: #000 !important;
+}
+
+.leaflet-control-attribution {
+    background: rgba(0, 0, 0, 0.5) !important;
+    color: var(--text-muted) !important;
+    font-size: 8px !important;
+}
+
+/* Markers */
+.tactical-marker {
+    background: none;
+    border: none;
+}
+
+.marker-icon-plane {
+    color: var(--accent-blue);
+    filter: drop-shadow(0 0 5px var(--accent-blue-glow));
+}
+
+.marker-icon-ship {
+    color: #00ffaa;
+    filter: drop-shadow(0 0 5px rgba(0, 255, 170, 0.4));
+}
+
+.marker-label {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 10px;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    border: 1px solid var(--panel-border);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.tactical-marker:hover .marker-label {
+    opacity: 1;
+}
+
+/* RED ALERT MODE */
+body.red-alert {
+    animation: master-alert 2s infinite;
+}
+
+body.red-alert .bg-glow-blue {
+    background: radial-gradient(circle, var(--accent-red-glow) 0%, transparent 70%);
+}
+
+body.red-alert .brand-icon,
+body.red-alert .brand-text .highlight,
+body.red-alert .pulse-dot {
+    filter: drop-shadow(0 0 15px var(--accent-red));
+}
+
+body.red-alert .leaflet-tile {
+    filter: brightness(0.5) contrast(1.5) sepia(1) hue-rotate(-50deg) saturate(3);
+}
+
+@keyframes master-alert {
+
+    0%,
+    100% {
+        background-color: #050608;
+    }
+
+    50% {
+        background-color: #1a0505;
+    }
+}
+
+.surveillance-cam {
+    cursor: zoom-in;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.surveillance-cam:hover {
+    transform: scale(1.02);
+    border-color: var(--accent-blue) !important;
+    z-index: 10;
+}
+
+.surveillance-cam:fullscreen {
+    padding: 0;
+    border: none;
+    border-radius: 0;
+}
+
+.surveillance-cam:fullscreen .cam-overlay {
+    top: 20px;
+    left: 20px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .brand-text .subtitle {

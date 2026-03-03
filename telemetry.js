@@ -63,10 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Simulated market data (can be replaced with real API via Finnhub/Binance later)
     const marketData = [
-        { symbol: 'CL=F', name: 'WTI Crude Oil', price: 82.45, change: 1.25, icon: 'droplet', up: true },
-        { symbol: 'GC=F', name: 'Gold Futures', price: 2354.10, change: 15.40, icon: 'gem', up: true },
-        { symbol: 'BTC-USD', name: 'Bitcoin', price: 64230.00, change: -850.50, icon: 'bitcoin', up: false },
-        { symbol: '^VIX', name: 'Volatility Index', price: 18.50, change: 2.15, icon: 'activity', up: true }
+        { symbol: 'CL=F', name: 'WTI Crude Oil', price: 82.45, change: 1.25, icon: 'droplet', up: true, url: 'https://finance.yahoo.com/quote/CL=F' },
+        { symbol: 'GC=F', name: 'Gold Futures', price: 2354.10, change: 15.40, icon: 'gem', up: true, url: 'https://finance.yahoo.com/quote/GC=F' },
+        { symbol: 'BTC-USD', name: 'Bitcoin', price: 64230.00, change: -850.50, icon: 'bitcoin', up: false, url: 'https://finance.yahoo.com/quote/BTC-USD' },
+        { symbol: '^VIX', name: 'Volatility Index', price: 18.50, change: 2.15, icon: 'activity', up: true, url: 'https://finance.yahoo.com/quote/^VIX' }
     ];
 
     function renderMarkets() {
@@ -76,8 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const jitter = (Math.random() * 0.5 * (Math.random() > 0.5 ? 1 : -1));
             const newPrice = (m.price + jitter).toFixed(2);
 
-            const item = document.createElement('div');
+            const item = document.createElement('a');
+            item.href = m.url;
+            item.target = "_blank";
             item.className = 'market-item';
+            item.style.textDecoration = 'none';
             item.innerHTML = `
                 <div class="market-info">
                     <div class="market-icon"><i data-lucide="${m.icon}"></i></div>
@@ -123,22 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- 4. Interactive Threat Map (D3 + TopoJSON + Live USGS Seismic Data) ---
-    const mapContainer = document.getElementById('threat-map-container');
-    const width = mapContainer.clientWidth;
-    const height = 300;
-
-    const svg = d3.select("#threat-map-container")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height);
-
-    // Zoom into Middle East region
-    const projection = d3.geoMercator()
-        .scale(400)
-        .center([45, 30]) // Middle East Center (Long, Lat)
-        .translate([width / 2, height / 2]);
-
-    const path = d3.geoPath().projection(projection);
+    const mapContainer = document.getElementById('map-container');
+    if (!mapContainer) return;
 
     // Load GeoJSON Map Data
     d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson").then(function (topo) {
@@ -263,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const terminalLog = document.getElementById('terminal-log');
     let knownAnomalies = new Set();
 
-    function addTerminalLog(message, isAlert = false) {
+    window.addTerminalLog = function (message, isAlert = false) {
         const p = document.createElement('div');
         p.className = `log-line ${isAlert ? 'alert-msg' : ''}`;
         const time = new Date().toISOString().substring(11, 19);

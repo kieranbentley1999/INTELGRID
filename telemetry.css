@@ -142,6 +142,21 @@
     justify-content: space-between;
     padding: 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none;
+}
+
+.market-item:hover {
+    background: rgba(0, 212, 255, 0.05);
+    border-color: rgba(0, 212, 255, 0.2);
+    transform: translateX(5px);
+}
+
+.market-item:hover .market-icon {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 10px var(--accent-blue-glow);
 }
 
 .market-item:last-child {
