@@ -141,17 +141,27 @@ document.addEventListener('DOMContentLoaded', () => {
     audioToggle.addEventListener('click', async () => {
         if (!ambience) {
             ambience = new AudioAmbience();
+            window.ambience = ambience; // Expose for SigintHub
             await ambience.init();
         }
 
         if (ambience.isPlaying) {
             ambience.stop();
+            if (window.SigintHub) window.SigintHub.stopCurrent();
             audioStatus.textContent = 'AMBIENCE: OFF';
             iconSpan.setAttribute('data-lucide', 'volume-x');
             audioToggle.classList.remove('active');
         } else {
             await ambience.init(); // ensure context is resumed
             ambience.start();
+
+            // Initialize SIGINT Hub
+            if (window.SigintHub) {
+                window.SigintHub.init(ambience.ctx);
+                window.SigintHub.setChannel(0);
+            }
+
+            audioStatus.textContent = 'AMBIENCE: ON';
             audioStatus.textContent = 'AMBIENCE: ON';
             iconSpan.setAttribute('data-lucide', 'volume-2');
             audioToggle.classList.add('active');

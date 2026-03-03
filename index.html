@@ -162,6 +162,25 @@
                     </div>
                 </div>
 
+                <!-- NEW: SIGINT HUB -->
+                <div class="sigint-widget mb-widget">
+                    <div class="widget-header">
+                        <i data-lucide="radio"></i> SIGINT HUB // LIVE INTERCEPT
+                    </div>
+                    <div class="sigint-display">
+                        <canvas id="oscilloscope" width="300" height="80"></canvas>
+                        <div class="sigint-meta">
+                            <div id="sigint-name" class="sigint-chan">AWAITING SIGNAL...</div>
+                            <div id="sigint-freq" class="sigint-freq">---.--- MHZ</div>
+                        </div>
+                    </div>
+                    <div class="sigint-controls">
+                        <button id="sigint-prev" class="sigint-btn"><i data-lucide="chevron-left"></i></button>
+                        <div class="sigint-status">RECEIVING</div>
+                        <button id="sigint-next" class="sigint-btn"><i data-lucide="chevron-right"></i></button>
+                    </div>
+                </div>
+
                 <div class="terminal-widget">
                     <div class="widget-header">
                         <i data-lucide="radio"></i> LIVE SEISMIC / KINETIC INTERCEPTS
@@ -327,6 +346,7 @@
     <script src="telemetry.js?v=5.0"></script>
     <script src="pfp.js?v=5.0"></script>
     <script src="cyber.js?v=5.0"></script>
+    <script src="radio.js?v=5.0"></script>
     <script src="map_system.js?v=5.0"></script>
     <script>
         // Initialize Icons
